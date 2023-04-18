@@ -9,11 +9,11 @@ public class task01 {
         System.out.println("Введите число N:");
         Scanner in = new Scanner(System.in);
         int N = in.nextInt();
-        System.out.println("Тругольное число для N: " + TriangleNumber(N));
+        System.out.println("Тругольное число для N: " + triangleNumber(N));
         in.close();
     }
 
-    static int TriangleNumber(int Number) {
+    static int triangleNumber(int Number) {
         int triangle = 0;
         triangle = (Number * (Number + 1)) / 2;
         return triangle;
