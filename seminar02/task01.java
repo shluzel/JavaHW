@@ -11,7 +11,8 @@ public class task01 {
                 StringBuilder sbJson = loadFile(filename);
 
                 String[] marks = sbJson.toString().split("},\\{");
-
+                save("", fileinfo, false);
+                
                 for (String student : marks) {
                     student = student.replace("\"", "");
                     if (student.contains("[")) {
