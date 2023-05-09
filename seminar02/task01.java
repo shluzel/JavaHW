@@ -1,41 +1,83 @@
-
-import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class task01 {
     public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader("seminar02/marks.json"))) {
-            String marks;
-            while ((marks = br.readLine()) != null) {
-                sb.append(marks);
+                String jsonString = "[{\"фамилия\":\"Иванов\",\"оценка\":\"5\",\"предмет\":\"Математика\"},{\"фамилия\":\"Петрова\",\"оценка\":\"4\",\"предмет\":\"Информатика\"},{\"фамилия\":\"Краснов\",\"оценка\":\"5\",\"предмет\":\"Физика\"}]";
+                String filename = "seminar02/marks.json";
+                String fileinfo = "seminar02/info.txt";
+                save(jsonString, filename, false);
+                StringBuilder sbJson = loadFile(filename);
+
+                String[] marks = sbJson.toString().split("},\\{");
+
+                for (String student : marks) {
+                    student = student.replace("\"", "");
+                    if (student.contains("[")) {
+                        student = student.replace("[", "");
+                    }
+                    if (student.contains("]")) {
+                        student = student.replace("]", "");
+                    }
+                    if (student.contains("{")) {
+                        student = student.replace("{", "");
+                    }
+                    if (student.contains("}")) {
+                        student = student.replace("}", "");
+                    }
+
+                    String[] text = student.split(",");
+                    StringBuilder note = gettext(text);
+                    System.out.println(note);
+                    note.append("\n");
+                    save(note.toString(), fileinfo, true);
+        
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Map <String, String> map = new HashMap<>();
-
-        String[] keys = sb.toString().replace("{", "").
-                replace("[", "").
-                replace("]", "").
-                replace("\"", "").
-                replaceAll("\\s", "").
-                split("},");
-
-        for (String marks : keys) {
-            String[] person = marks.split(",");
-            for (String keyValues : person) {
-                String[] keyValue = keyValues.replace("}", "").split(":");
-                String key = keyValue[0];
-                String value = keyValue[1];
-                map.put(key, value);
+        
+            public static StringBuilder gettext(String[] text) {
+                StringBuilder note = new StringBuilder();
+                for (String record : text) {
+                    String[] element = record.split(":");
+                    switch (element[0]) {
+                        case "фамилия" -> {
+                            note.append("Студент ");
+                            note.append(element[1]);
+                        }
+                        case "оценка" -> {
+                            note.append(" получил ");
+                            note.append(element[1]);
+                        }
+                        case "предмет" -> {
+                            note.append(" по предмету ");
+                            note.append(element[1]);
+                            note.append(".");
+                        }
+                    }
+                }
+                return note;
             }
-            System.out.printf("Студент %s получил %s по предмету %s.\n", map.get("фамилия"),
-                    map.get("оценка"), map.get("предмет"));
-        }
-    }
+        
+            public static void save(String text, String filename, boolean add) {
+                try (FileWriter fw = new FileWriter(filename, add)) {
+                    fw.write(text);
+                    fw.flush();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+    
+            public static StringBuilder loadFile(String filename) {
+                StringBuilder text = new StringBuilder();
+                try (FileReader fr = new FileReader(filename)) {
+                    int symb;
+                    while ((symb = fr.read()) != -1) {
+                        text.append((char) symb);
+                    }
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                return text;
+            }
 }
