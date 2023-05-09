@@ -20,8 +20,8 @@ public class task02 {
         Collections.sort(list);
         System.out.println("Отсортированный список: ");
         System.out.println(list);
-        min=list.get(0);
-        max=list.get(size - 1);
+        min=Collections.min(list);
+        max=Collections.max(list);
         System.out.println("Сумма всех чисел списка = " + average);
         average = average / size;
         System.out.println("Минимальное = " + min);
