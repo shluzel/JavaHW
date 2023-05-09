@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class task03 {
     public static void main(String[] args){
-        String[] planets = new String[]{"Меркурий", "Венера", "Земля", "Марс", "Юпитер","Сатурн","Уран", "Нептун"};
+        String[] planets = new String[]{"Меркурий", "Венера", "Земля", "Марс", "Юпитер", "Сатурн", "Уран", "Нептун"};
         Random newrandom = new Random();
         ArrayList<String> repeatlist = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
